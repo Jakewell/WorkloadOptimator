@@ -1,25 +1,22 @@
+table, th, td {
+	border-collapse: collapse;
+	border-bottom: 1px solid;
+}
+
+th, td {
+	text-align: left;
+	padding: 10px 20px;
+}
+
 table {
 	width: 100%;
 }
 
-table, th, td {
-	border: 1px solid;
-	border-collapse: collapse;
-}
-
-th, td {
-	padding: 5px 10px;
-}
-
-h1 {
-	font-weight: normal;
-}
-
-h2 {
-	font-weight: normal;
-}
-
 #mainContainer {
 	margin: 0 auto;
-	width: 800px;
+	width: 50%;
+}
+
+#calculateButton {
+	margin: 10px 0;
 }
