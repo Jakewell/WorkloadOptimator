@@ -6,17 +6,47 @@ table, th, td {
 th, td {
 	text-align: left;
 	padding: 10px 20px;
+	width: 25%;
+}
+
+td {
+	border-top: 1px solid;
 }
 
 table {
 	width: 100%;
+	margin: 15px 0;
+}
+
+#addCourseTable td:last-child {
+	text-align: right;
+}
+
+#courseListTable td:last-child {
+	text-align: right;
 }
 
 #mainContainer {
 	margin: 0 auto;
-	width: 50%;
+	width: 75%;
 }
 
 #calculateButton {
 	margin: 10px 0;
+}
+
+#addCourseContainer {
+	margin: 50px 0;
+}
+
+#courseListContainer {
+	
+}
+
+i {
+	padding: 10px;
+}
+
+i:hover {
+	cursor: pointer;
 }

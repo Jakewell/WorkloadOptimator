@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Course Project - Jarkko Saikkonen & Ilari Juvani</title>
+	<title>Course Project - Jarkko Saikkonen and Ilari Juvani</title>
+	<link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="project.css">
 	<script type="text/javascript" src="../jquery-3.1.1.min.js"></script>
 	<script type="text/javascript" src="project.js"></script>
@@ -11,15 +12,31 @@
 <body>
 	<div id="mainContainer">
 		<h1>Workload Optimator</h1>
-		<h2>Jarkko Saikkonen & Ilari Juvani</h2>
-		<p>Maximum Workload: 200 h</p>
-		<table>
-			<tr>
-				<th>Course name</th>
-				<th>Credits</th>
-				<th>Workload</th>
-			</tr>
-		</table>
+		<h2>Jarkko Saikkonen and Ilari Juvani</h2>
+		<p>Maximum Workload: <input id="maxWorkloadInput" type="text" size="5" maxlength="3"> h</p>
+		
+		<div id="addCourseContainer">
+			<h3>Add a Course</h3>
+			<table id="addCourseTable">
+				<tr>
+					<th>Course name</th>
+					<th>Credits</th>
+					<th>Workload</th>
+				</tr>
+				<tr>
+					<td><input id="courseNameInput" type="text" size="15" maxlength="20"></td>
+					<td><input id="creditsInput" type="text" size="5" maxlength="2"></td>
+					<td><input id="workloadInput" type="text" size="5" maxlength="3"></td>
+					<td><i id="plusButton" class="fa fa-plus fa-lg"></i></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div id="courseListContainer">
+			<table id="courseListTable">
+			</table>
+		</div>
+		
 		<button id="calculateButton" type="button">Calculate</button>
 	</div>		
 </body>
