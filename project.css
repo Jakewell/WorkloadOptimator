@@ -1,9 +1,14 @@
+table {
+	width: 100%;
+}
+
 table, th, td {
+	border: 1px solid;
 	border-collapse: collapse;
-	border-bottom: 1px solid;
 }
 
 th, td {
+<<<<<<< HEAD
 	text-align: left;
 	padding: 10px 20px;
 	width: 25%;
@@ -93,4 +98,20 @@ i {
 i:hover {
 	cursor: pointer;
 >>>>>>> origin/master
+=======
+	padding: 5px 10px;
+}
+
+h1 {
+	font-weight: normal;
+}
+
+h2 {
+	font-weight: normal;
+}
+
+#mainContainer {
+	margin: 0 auto;
+	width: 800px;
+>>>>>>> parent of 5bb4143... Working on some level
 }

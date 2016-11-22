@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 $(function() {
     
     /* SOURCES
@@ -279,3 +280,5 @@ $(function() {
 		return optimalSets;
 	}
 });
+=======
+>>>>>>> parent of 5bb4143... Working on some level
