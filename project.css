@@ -7,10 +7,18 @@ th, td {
 	text-align: left;
 	padding: 10px 20px;
 	width: 25%;
+<<<<<<< HEAD
+=======
+}
+
+td {
+	border-top: 1px solid;
+>>>>>>> origin/master
 }
 
 table {
 	width: 100%;
+<<<<<<< HEAD
 	margin: 10px 0;
 }
 
@@ -20,10 +28,18 @@ i {
 
 i:hover {
 	cursor: pointer;
+=======
+	margin: 15px 0;
+}
+
+#addCourseTable td:last-child {
+	text-align: right;
+>>>>>>> origin/master
 }
 
 #courseListTable td:last-child {
 	text-align: right;
+<<<<<<< HEAD
 }
 
 #courseListTable tr:not(:first-child):hover {
@@ -40,12 +56,20 @@ i:hover {
 
 #resultListContainer {
 	margin-top: 75px;
+=======
+}
+
+#mainContainer {
+	margin: 0 auto;
+	width: 75%;
+>>>>>>> origin/master
 }
 
 #calculateButton {
 	margin: 10px 0;
 }
 
+<<<<<<< HEAD
 #addCourseContainer input {
 	margin: 0 0 15px 15px;
 }
@@ -53,4 +77,20 @@ i:hover {
 #maxWorkloadInput {
 	margin: 0 auto 15px auto;
 	width: 90%;
+=======
+#addCourseContainer {
+	margin: 50px 0;
+}
+
+#courseListContainer {
+	
+}
+
+i {
+	padding: 10px;
+}
+
+i:hover {
+	cursor: pointer;
+>>>>>>> origin/master
 }
