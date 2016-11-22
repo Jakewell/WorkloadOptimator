@@ -6,17 +6,51 @@ table, th, td {
 th, td {
 	text-align: left;
 	padding: 10px 20px;
+	width: 25%;
 }
 
 table {
 	width: 100%;
+	margin: 10px 0;
+}
+
+i {
+	padding: 10px;
+}
+
+i:hover {
+	cursor: pointer;
+}
+
+#courseListTable td:last-child {
+	text-align: right;
+}
+
+#courseListTable tr:not(:first-child):hover {
+	background-color: #F5F5F5;
+}
+
+#resultListTable tr:not(:first-child):hover {
+	background-color: #F5F5F5;
 }
 
 #mainContainer {
-	margin: 0 auto;
-	width: 50%;
+	width: 100%;
+}
+
+#resultListContainer {
+	margin-top: 75px;
 }
 
 #calculateButton {
 	margin: 10px 0;
+}
+
+#addCourseContainer input {
+	margin: 0 0 15px 15px;
+}
+
+#maxWorkloadInput {
+	margin: 0 auto 15px auto;
+	width: 90%;
 }
