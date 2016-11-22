@@ -45,7 +45,6 @@ $(function() {
 		}
 	];
 	
-
 	// When DOM has loaded, set the max hours input value to 200
 	// List all the items in the courses array
     $("#maxWorkloadInput").val(200);
@@ -69,7 +68,12 @@ $(function() {
 					"<td>" + courseArray[i].hours + " h</td>" +
 					"<td><i id='xButtonID" + i + "' class='fa fa-times fa-lg xButton' aria-hidden='true'></i></td>" +
 				"</tr>"
-
+			);
+		}
+	}
+	
+	// Add a course by pressing the + button
+	// Display the updated courses array
 	$("#plusButton").on("click", function() {
 		if ( !($("#courseNameInput").val() && $("#creditsInput").val() && $("#workloadInput").val()) ) {
 			return;
@@ -149,15 +153,6 @@ $(function() {
 	}
 	
 	// Calculate the actual problem case by using course credits
-
-        var maxHours = $("#maxWorkloadInput").val();
-        var maxHoursNumber = Number(maxHours);
-		var result = knapSack(courseArray.length - 1, maxHoursNumber);
-		console.log(result);
-		console.log(findSums(courseArray, result));
-	});
-	
-
     function knapSack(a, b) {
         if (a < 0) {
             return 0;
@@ -170,15 +165,12 @@ $(function() {
         }
     }
     
-
 	// From here on the code calculates the optimal courses
 	// The following code was needed to get the other information (name, hours)...
 	// ... from the optimal credits
 	// Otherwise we would only have the credits, but wouldn't know which courses...
 	// ... were selected
 	// Result is returned as an array which contains all the information
-
-
     function powerset(courseArray) {
 		var ps = [[]];
 		for (var i = 0; i < courseArray.length; i++) {
@@ -212,20 +204,14 @@ $(function() {
 		var courseSets = powerset(courseArray);
 		for (var i = 0; i < courseSets.length; i++) {
 			var courseSet = courseSets[i]; 
-
 			if (sumCredits(courseSet) == targetSum) {
 				sumSets.push(courseSet);
 			}
-
-			if (sumCredits(courseSet) == targetSum)
-				sumSets.push(courseSet);
-
 		}
 		
 		for (var i = 0; i < sumSets.length; i++) {
 			var sumSet = sumSets[i];
 			
-
 			if (sumHours(sumSet) <= $("#maxWorkloadInput").val()) {
 				optimalSets.push(sumSet);
 			}
@@ -233,12 +219,6 @@ $(function() {
 		
 		console.log(sumSets);
 		console.log(optimalSets);
-
-			if (sumHours(sumSet) <= 200)
-				optimalSets.push(sumSet);
-		}
-		
-		console.log(sumSets);
 		return optimalSets;
 	}
 });
