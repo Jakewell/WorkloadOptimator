@@ -1,6 +1,5 @@
 table, th, td {
 	border-collapse: collapse;
-	border-bottom: 1px solid;
 }
 
 th, td {
@@ -14,12 +13,33 @@ table {
 	margin: 10px 0;
 }
 
-i {
-	padding: 10px;
-}
-
 i:hover {
 	cursor: pointer;
+}
+
+tr:nth-child(even) {
+	background-color: #F0F0F0;
+}
+
+.panel {
+	padding: 2px;
+	border-radius: 0;
+}
+
+.panel-heading {
+	border-radius: 0;
+}
+
+.bolded {
+	font-weight: bold;
+}
+
+.redColor {
+	color: #BA2321;
+}
+
+.greenColor {
+	color: #379C1C;
 }
 
 #courseListTable td:last-child {
@@ -27,11 +47,15 @@ i:hover {
 }
 
 #courseListTable tr:not(:first-child):hover {
-	background-color: #F5F5F5;
+	background-color: #D6DFF5;
 }
 
 #resultListTable tr:not(:first-child):hover {
-	background-color: #F5F5F5;
+	background-color: #D6DFF5;
+}
+
+#resultListTable tr:last-child {
+	border-top: 1px solid;
 }
 
 #mainContainer {
@@ -43,7 +67,9 @@ i:hover {
 }
 
 #calculateButton {
-	margin: 10px 0;
+	margin: 0 0 40px 0;
+	width: 100px;
+	height: 50px;
 }
 
 #addCourseContainer input {
@@ -53,8 +79,20 @@ i:hover {
 #maxWorkloadInput {
 	margin: 0 auto 15px auto;
 	width: 90%;
-<<<<<<< HEAD
 }
-=======
+
+#foot {
+	height: 200px;
 }
->>>>>>> origin/master
+
+#warningField {
+	padding-top: 14px;
+	font-size: 16px;
+}
+
+#plusButton {
+	width: 40px;
+	height: 34px;
+	padding-right: 25px;
+	margin-left: 15px;
+}

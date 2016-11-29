@@ -66,7 +66,7 @@ $(function() {
 					"<td>" + courseArray[i].name + "</td>" +
 					"<td>" + courseArray[i].credits + " cr</td>" +
 					"<td>" + courseArray[i].hours + " h</td>" +
-					"<td><i id='xButtonID" + i + "' class='fa fa-times fa-lg xButton' aria-hidden='true'></i></td>" +
+					"<td><button id='xButtonID" + i + "' class='btn btn-danger xButton'><i class='fa fa-times fa-lg' aria-hidden='true'></i></td>" +
 				"</tr>"
 			);
 		}
@@ -76,11 +76,17 @@ $(function() {
 	// Display the updated courses array
 	$("#plusButton").on("click", function() {
 		if ( !($("#courseNameInput").val() && $("#creditsInput").val() && $("#workloadInput").val()) ) {
+			$("#warningField").empty();
+			$("#warningField").append("<span class='redColor'>All fields are required!</span>")
 			return;
 		} else {
 			var nameValue = $("#courseNameInput").val();
 			var creditsValue = $("#creditsInput").val();
 			var workValue = $("#workloadInput").val();
+			
+			nameValue = $.trim(nameValue);
+			creditsValue = $.trim(creditsValue);
+			workValue = $.trim(workValue);
             
             var creditsValueNumber = Number(creditsValue);
             var workValueNumber = Number(workValue);
@@ -95,6 +101,9 @@ $(function() {
 			$("#creditsInput").val("");
 			$("#workloadInput").val("");
 			
+			$("#warningField").empty();
+			$("#warningField").append("<span class='greenColor'>Course was added!</span>");
+			
 			$("#courseListTable").empty();
 			listCourseItems();
             console.log(courseArray);
@@ -107,6 +116,8 @@ $(function() {
         var currentPos = $(this).attr("id");
         var currentButtonID = currentPos.slice(9);
         courseArray.splice(currentButtonID, 1);
+		$("#warningField").empty();
+		$("#warningField").append("<span class='greenColor'>Course was deleted!</span>")
 		$("#courseListTable").empty();
 		listCourseItems();
 	});
@@ -117,21 +128,74 @@ $(function() {
 	// List the returned courses from the optimalSets array
 	$("#calculateButton").on("click", function() {
 		$("#resultListTable").empty();
-        var maxHours = $("#maxWorkloadInput").val();
-        var maxHoursNumber = Number(maxHours);
-		var creditsResult = knapSack(courseArray.length - 1, maxHoursNumber);
-		console.log(creditsResult);
-		
-		var optimalCourses = findSums(courseArray, creditsResult);
-		listResultItems(optimalCourses);
-		$("html, body").animate({
-			scrollTop: $("#resultListTable").offset().top
-		}, 1000);
+		if ($("#maxWorkloadInput").val()) {
+			$("#warningField").empty();
+			var maxHours = $("#maxWorkloadInput").val();
+			var maxHoursNumber = Number(maxHours);
+			var creditsResult = knapSack(courseArray.length - 1, maxHoursNumber);
+			console.log(creditsResult);
+			
+			var optimalCourses = findSums(courseArray, creditsResult);
+			listResultItems(optimalCourses);
+			$("html, body").animate({
+				scrollTop: $("#resultListTable").offset().top
+			}, 1000);
+		} else {
+			$("#warningField").empty();
+			$("#warningField").append("<span class='redColor'>Maximum Workload is required!</span>");
+		}
+	});
+	
+	// Input validation for maximum workload
+	$("#maxWorkloadInput").keypress(function(e) {
+		var regex = new RegExp("^[0-9]+$");
+		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+		if (regex.test(str)) {
+			return true;
+		}
+
+		e.preventDefault();
+		return false;
+	});
+	
+	// Input validation for adding a course
+	$("#courseNameInput").keypress(function(e) {
+		var regexName = new RegExp("^[a-zA-Z0-9åÅäÄöÖ ]+( [a-zA-Z0-9]+)*$");
+		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+		if (regexName.test(str)) {
+			return true;
+		}
+
+		e.preventDefault();
+		return false;
+	});
+	
+	$("#creditsInput").keypress(function(e) {
+		var regexCredits = new RegExp("^[0-9]+$");
+		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+		if (regexCredits.test(str)) {
+			return true;
+		}
+
+		e.preventDefault();
+		return false;
+	});
+	
+	$("#workloadInput").keypress(function(e) {
+		var regexHours = new RegExp("^[0-9]+$");
+		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+		if (regexHours.test(str)) {
+			return true;
+		}
+
+		e.preventDefault();
+		return false;
 	});
 	
 	// Display the optimal results in a new table
 	function listResultItems(optimal) {
-		$("#resultListContainer h3").html("Optimal Courses");
+		var creditsTotal = 0;
+		var hoursTotal = 0;
 		$("#resultListTable").append(
 			"<tr>" +
 				"<th>Course name</th>" +
@@ -141,6 +205,8 @@ $(function() {
 			"</tr>");
 		
 		for (var i = 0; i < optimal[0].length; i++) {
+			creditsTotal += optimal[0][i].credits;
+			hoursTotal += optimal[0][i].hours;
 			$("#resultListTable").append(
 				"<tr>" +
 					"<td>" + optimal[0][i].name + "</td>" +
@@ -150,6 +216,15 @@ $(function() {
 				"</tr>"
 			);
 		}
+		
+		$("#resultListTable").append(
+			"<tr>" +
+				"<td><span class='bolded'>Total</span></td>" +
+				"<td><span class='bolded'>" + creditsTotal + " cr</span></td>" +
+				"<td><span class='bolded'>" + hoursTotal + " h</span></td>" +
+				"<td></td>" +
+			"</tr>"
+		);
 	}
 	
 	// Calculate the actual problem case by using course credits
