@@ -6,6 +6,10 @@ $(function() {
 	- Also some information on w3schools.com
 	*/
     
+    
+    //Check if browser is firefox. This is needed later in backspace keypress fix
+    var isFirefox = typeof InstallTrigger !== 'undefined';
+    
 	// Array including all courses
 	var courseArray = [
 		{
@@ -73,9 +77,12 @@ $(function() {
 	}
 	
 	// Add a course by pressing the + button
+	$("#plusButton").on("click", addCourse);
+    
+    // Function for adding courses
 	// Display the updated courses array
-	$("#plusButton").on("click", function() {
-		if ( !($("#courseNameInput").val() && $("#creditsInput").val() && $("#workloadInput").val()) ) {
+    function addCourse(){
+        if ( !($("#courseNameInput").val() && $("#creditsInput").val() && $("#workloadInput").val()) ) {
 			$("#warningField").empty();
 			$("#warningField").append("<span class='redColor'>All fields are required!</span>")
 			return;
@@ -108,7 +115,8 @@ $(function() {
 			listCourseItems();
             console.log(courseArray);
 		}
-	});
+        
+    }
 	
 	// Remove a course by pressing the X button
 	// Display the updated courses array
@@ -122,12 +130,15 @@ $(function() {
 		listCourseItems();
 	});
 	
-	// Calculate the optimal courses
+	
+	$("#calculateButton").on("click", calculateCourses);
+    
+    // Calculate the optimal courses
 	// Knapsack function ->
 	// Pass the returned optimal credits to findSums function ->
 	// List the returned courses from the optimalSets array
-	$("#calculateButton").on("click", function() {
-		$("#resultListTable").empty();
+    function calculateCourses() {
+        $("#resultListContainer").empty();
 		if ($("#maxWorkloadInput").val()) {
 			$("#warningField").empty();
 			var maxHours = $("#maxWorkloadInput").val();
@@ -138,16 +149,27 @@ $(function() {
 			var optimalCourses = findSums(courseArray, creditsResult);
 			listResultItems(optimalCourses);
 			$("html, body").animate({
-				scrollTop: $("#resultListTable").offset().top
+				scrollTop: $(".resultListTable:first").offset().top
 			}, 1000);
 		} else {
 			$("#warningField").empty();
 			$("#warningField").append("<span class='redColor'>Maximum Workload is required!</span>");
 		}
-	});
+        
+    }
 	
 	// Input validation for maximum workload
 	$("#maxWorkloadInput").keypress(function(e) {
+        
+        var key = e.keyCode || e.charCode;
+        
+        if (key == 13) {
+            calculateCourses();
+            return;
+        }
+        
+        if ( isFirefox && (key == 8 || key == 46 || (key >= 37 && key <= 40)) ) {return;}
+        
 		var regex = new RegExp("^[0-9]+$");
 		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 		if (regex.test(str)) {
@@ -160,6 +182,16 @@ $(function() {
 	
 	// Input validation for adding a course
 	$("#courseNameInput").keypress(function(e) {
+        
+        var key = e.keyCode || e.charCode;
+        
+        if (key == 13) {
+            addCourse();
+            return;
+        }
+        
+        if ( isFirefox && (key == 8 || key == 46 || (key >= 37 && key <= 40)) ) {return;}
+        
 		var regexName = new RegExp("^[a-zA-Z0-9åÅäÄöÖ ]+( [a-zA-Z0-9]+)*$");
 		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 		if (regexName.test(str)) {
@@ -171,6 +203,16 @@ $(function() {
 	});
 	
 	$("#creditsInput").keypress(function(e) {
+        
+        var key = e.keyCode || e.charCode;
+        
+        if (key == 13) {
+            addCourse();
+            return;
+        }
+        
+        if ( isFirefox && (key == 8 || key == 46 || (key >= 37 && key <= 40)) ) {return;}
+        
 		var regexCredits = new RegExp("^[0-9]+$");
 		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 		if (regexCredits.test(str)) {
@@ -182,6 +224,16 @@ $(function() {
 	});
 	
 	$("#workloadInput").keypress(function(e) {
+        
+        var key = e.keyCode || e.charCode;
+        
+        if (key == 13) {
+            addCourse();
+            return;
+        }
+        
+        if ( isFirefox && (key == 8 || key == 46 || (key >= 37 && key <= 40)) ) {return;}
+        
 		var regexHours = new RegExp("^[0-9]+$");
 		var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
 		if (regexHours.test(str)) {
@@ -194,37 +246,50 @@ $(function() {
 	
 	// Display the optimal results in a new table
 	function listResultItems(optimal) {
-		var creditsTotal = 0;
-		var hoursTotal = 0;
-		$("#resultListTable").append(
-			"<tr>" +
-				"<th>Course name</th>" +
-				"<th>Credits</th>" +
-				"<th>Workload</th>" +
-				"<th></th>" +
-			"</tr>");
-		
-		for (var i = 0; i < optimal[0].length; i++) {
-			creditsTotal += optimal[0][i].credits;
-			hoursTotal += optimal[0][i].hours;
-			$("#resultListTable").append(
-				"<tr>" +
-					"<td>" + optimal[0][i].name + "</td>" +
-					"<td>" + optimal[0][i].credits + " cr</td>" +
-					"<td>" + optimal[0][i].hours + " h</td>" +
-					"<td></td>" +
-				"</tr>"
-			);
-		}
-		
-		$("#resultListTable").append(
-			"<tr>" +
-				"<td><span class='bolded'>Total</span></td>" +
-				"<td><span class='bolded'>" + creditsTotal + " cr</span></td>" +
-				"<td><span class='bolded'>" + hoursTotal + " h</span></td>" +
-				"<td></td>" +
-			"</tr>"
-		);
+        
+        for(var i = 0; i < optimal.length; i++){
+            var creditsTotal = 0;
+            var hoursTotal = 0;
+
+            var panelPrimary = $('<div class="panel panel-primary"><div class="panel-heading">Optimal Courses</div></div>');
+
+            var resultListTable = $('<table class="resultListTable" class="table"></table>');
+
+            resultListTable.append(
+                "<tr>" +
+                    "<th>Course name</th>" +
+                    "<th>Credits</th>" +
+                    "<th>Workload</th>" +
+                    "<th></th>" +
+                "</tr>");
+
+            for (var j = 0; j < optimal[i].length; j++) {
+                creditsTotal += optimal[i][j].credits;
+                hoursTotal += optimal[i][j].hours;
+                resultListTable.append(
+                    "<tr>" +
+                        "<td>" + optimal[i][j].name + "</td>" +
+                        "<td>" + optimal[i][j].credits + " cr</td>" +
+                        "<td>" + optimal[i][j].hours + " h</td>" +
+                        "<td></td>" +
+                    "</tr>"
+                );
+            }
+
+            resultListTable.append(
+                "<tr>" +
+                    "<td><span class='bolded'>Total</span></td>" +
+                    "<td><span class='bolded'>" + creditsTotal + " cr</span></td>" +
+                    "<td><span class='bolded'>" + hoursTotal + " h</span></td>" +
+                    "<td></td>" +
+                "</tr>"
+            );
+
+            panelPrimary.append(resultListTable);
+            
+            $("#resultListContainer").append(panelPrimary);
+        }
+        
 	}
 	
 	// Calculate the actual problem case by using course credits
@@ -240,12 +305,56 @@ $(function() {
         }
     }
     
-	// From here on the code calculates the optimal courses
-	// The following code was needed to get the other information (name, hours)...
-	// ... from the optimal credits
-	// Otherwise we would only have the credits, but wouldn't know which courses...
-	// ... were selected
-	// Result is returned as an array which contains all the information
+	// This function is for finding the right set of courses which sum into the optimal number of credits,
+    // so that the courses can be returned and listed for the user. 
+    // Function works by finding all the possible set of courses which sum into the number of credits calculated 
+    // by knapSack function, and then evaluating the correct set with lowest workload (and which does not 
+    // exceed the maximum workload).
+    // Result array is outputted to the console.
+	function findSums(courseArray, targetSum) {
+		var sumSets = [];
+		var temp = [];
+        var optimalSets = [];
+		var courseSets = powerset(courseArray);
+        var workLoad;
+		for (var i = 0; i < courseSets.length; i++) {
+			var courseSet = courseSets[i]; 
+			if (sumCredits(courseSet) == targetSum) {
+				sumSets.push(courseSet);
+			}
+		}
+		
+		for (var i = 0; i < sumSets.length; i++) {
+			var sumSet = sumSets[i];
+			
+			if (sumHours(sumSet) <= $("#maxWorkloadInput").val()) {
+				temp.push(sumSet);
+			}
+		}
+        
+        var lowestWork = $("#maxWorkloadInput").val();
+        
+        for(var i = 0; i < temp.length; i++) {
+            workLoad = sumHours(temp[i]); 
+             if(workLoad < lowestWork){
+                 lowestWork = workLoad;
+             }   
+        }
+        
+        for(var i = 0; i < temp.length; i++) {
+            workLoad = sumHours(temp[i]); 
+             if(workLoad == lowestWork){
+                 optimalSets.push(temp[i]);
+             }   
+        }
+        
+        console.log("All possible sum sets:");
+		console.log(sumSets);
+        console.log("Most optimal sum sets:");
+		console.log(optimalSets);
+		return optimalSets;
+	}
+    
     function powerset(courseArray) {
 		var ps = [[]];
 		for (var i = 0; i < courseArray.length; i++) {
@@ -271,29 +380,5 @@ $(function() {
 		}
 		return total
 	}
-	
-	
-	function findSums(courseArray, targetSum) {
-		var sumSets = [];
-		var optimalSets = [];
-		var courseSets = powerset(courseArray);
-		for (var i = 0; i < courseSets.length; i++) {
-			var courseSet = courseSets[i]; 
-			if (sumCredits(courseSet) == targetSum) {
-				sumSets.push(courseSet);
-			}
-		}
-		
-		for (var i = 0; i < sumSets.length; i++) {
-			var sumSet = sumSets[i];
-			
-			if (sumHours(sumSet) <= $("#maxWorkloadInput").val()) {
-				optimalSets.push(sumSet);
-			}
-		}
-		
-		console.log(sumSets);
-		console.log(optimalSets);
-		return optimalSets;
-	}
+    
 });

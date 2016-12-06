@@ -54,7 +54,7 @@ tr:nth-child(even) {
 	background-color: #D6DFF5;
 }
 
-#resultListTable tr:last-child {
+.resultListTable tr:last-child {
 	border-top: 1px solid;
 }
 
